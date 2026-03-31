@@ -1,0 +1,29 @@
+client_id = "dc66441e8276e2dd77766181b6e39a3a"
+name = "remix-app-test"
+application_url = "https://lilly-unnative-uncontingently.ngrok-free.dev"
+embedded = true
+
+[build]
+automatically_update_urls_on_dev = false
+
+[webhooks]
+api_version = "2026-04"
+
+  [[webhooks.subscriptions]]
+  topics = [ "app/uninstalled" ]
+  uri = "/webhooks/app/uninstalled"
+
+  [[webhooks.subscriptions]]
+  topics = [ "app/scopes_update" ]
+  uri = "/webhooks/app/scopes_update"
+
+[access_scopes]
+scopes = "read_products,write_products,read_inventory,write_inventory,read_locations"
+
+[auth]
+redirect_urls = [ "https://lilly-unnative-uncontingently.ngrok-free.dev/api/auth" ]
+
+[app_proxy]
+url = "https://lilly-unnative-uncontingently.ngrok-free.dev"
+subpath = "notify"
+prefix = "apps"

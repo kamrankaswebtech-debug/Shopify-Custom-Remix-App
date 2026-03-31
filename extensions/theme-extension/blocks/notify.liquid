@@ -1,0 +1,277 @@
+{% comment %} ===== NOTIFY ME SECTION ===== {% endcomment %}
+
+{% if product.available == false %}
+
+<style>
+    .notify-me-btn {
+        background-color: #333;
+        color: #fff;
+        border: none;
+        padding: 12px 24px;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 4px;
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .notify-me-btn:hover {
+        background-color: #555;
+    }
+
+    .notify-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 9998;
+    }
+
+    .notify-modal {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: #fff;
+        padding: 30px;
+        border-radius: 8px;
+        z-index: 9999;
+        width: 90%;
+        max-width: 480px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .notify-modal h2 {
+        margin-top: 0;
+        margin-bottom: 8px;
+        font-size: 20px;
+    }
+
+    .notify-modal .product-info {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        background: #f5f5f5;
+        padding: 10px;
+        border-radius: 6px;
+        margin-bottom: 16px;
+    }
+
+    .notify-modal .product-info img {
+        width: 60px;
+        height: 60px;
+        object-fit: cover;
+        border-radius: 4px;
+    }
+
+    .notify-modal .product-info .product-name {
+        font-weight: bold;
+        font-size: 14px;
+    }
+
+    .notify-modal .product-info .product-variant {
+        font-size: 12px;
+        color: #888;
+    }
+
+    .notify-modal input,
+    .notify-modal textarea {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 12px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 14px;
+        box-sizing: border-box;
+    }
+
+    .notify-modal textarea {
+        height: 80px;
+        resize: vertical;
+    }
+
+    .notify-modal .btn-row {
+        display: flex;
+        gap: 10px;
+    }
+
+    .notify-modal .btn-submit {
+        flex: 1;
+        background: #333;
+        color: #fff;
+        border: none;
+        padding: 12px;
+        border-radius: 4px;
+        font-size: 15px;
+        cursor: pointer;
+    }
+
+    .notify-modal .btn-submit:hover {
+        background: #555;
+    }
+
+    .notify-modal .btn-close {
+        background: #eee;
+        border: none;
+        padding: 12px 18px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 15px;
+    }
+
+    .notify-success {
+        text-align: center;
+        padding: 20px 0;
+        color: green;
+        font-size: 16px;
+    }
+</style>
+
+<button class="notify-me-btn" id="notifyMeBtn">
+    Notify Me When Available
+</button>
+
+<div class="notify-overlay" id="notifyOverlay"></div>
+
+<div class="notify-modal" id="notifyModal">
+    <h2>Notify Me</h2>
+    <p style="color:#666; font-size:13px; margin-bottom:12px;">
+        We'll let you know when this product is back in stock.
+    </p>
+
+    <div class="product-info">
+        {% if product.featured_image %}
+        <img src="{{ product.featured_image | image_url: width: 100 }}" alt="{{ product.title }}" width="60" height="60">
+        {% endif %}
+        <div>
+            <div class="product-name">{{ product.title }}</div>
+            <div class="product-variant" id="selectedVariantText">Select a variant</div>
+        </div>
+    </div>
+
+    <div id="notifyFormWrapper">
+        <form id="notifyForm">
+            <input type="hidden" name="productId" value="{{ product.id }}">
+            <input type="hidden" name="productTitle" value="{{ product.title | escape }}">
+            <input type="hidden" name="productImage" value="{{ product.featured_image | image_url: width: 400 }}">
+            <input type="hidden" name="productVariant" id="productVariantField" value="">
+
+            <input type="text" name="name" placeholder="Your Name *" required>
+            <input type="email" name="email" placeholder="Your Email *" required>
+            <textarea name="message" placeholder="Message (optional)"></textarea>
+
+            <div class="btn-row">
+                <button type="button" class="btn-close" id="notifyCloseBtn">Cancel</button>
+                <button type="submit" class="btn-submit">Submit Request</button>
+            </div>
+        </form>
+    </div>
+
+    <div id="notifySuccess" class="notify-success" style="display:none;">
+        Thank you! We'll notify you when <strong>{{ product.title }}</strong> is back in stock.
+    </div>
+</div>
+
+<script>
+    (function () {
+        var btn = document.getElementById("notifyMeBtn");
+        var modal = document.getElementById("notifyModal");
+        var overlay = document.getElementById("notifyOverlay");
+        var closeBtn = document.getElementById("notifyCloseBtn");
+        var form = document.getElementById("notifyForm");
+        var successDiv = document.getElementById("notifySuccess");
+        var variantField = document.getElementById("productVariantField");
+        var variantText = document.getElementById("selectedVariantText");
+
+        function updateSelectedVariant() {
+            var variantSelector = document.querySelector('select[name="id"], input[name="id"]:checked');
+            if (variantSelector) {
+                var variantId = variantSelector.value;
+                var variantOption = document.querySelector('select[name="id"] option[value="' + variantId + '"]');
+                if (variantOption) {
+                    variantField.value = variantOption.text;
+                    variantText.textContent = variantOption.text;
+                }
+            }
+        }
+
+        btn && btn.addEventListener("click", function () {
+            updateSelectedVariant();
+            modal.style.display = "block";
+            overlay.style.display = "block";
+            document.body.style.overflow = "hidden";
+        });
+
+        function closeModal() {
+            modal.style.display = "none";
+            overlay.style.display = "none";
+            document.body.style.overflow = "";
+        }
+
+        closeBtn && closeBtn.addEventListener("click", closeModal);
+        overlay && overlay.addEventListener("click", closeModal);
+
+        form && form.addEventListener("submit", async function (e) {
+            e.preventDefault();
+            var submitBtn = form.querySelector(".btn-submit");
+            submitBtn.textContent = "Submitting...";
+            submitBtn.disabled = true;
+
+            try {
+                var formData = new FormData(form);
+
+                // App Proxy URL - CORS issue nahi hoga
+                var response = await fetch("https://lilly-unnative-uncontingently.ngrok-free.dev/apps/notify", {
+                    method: "POST",
+                    body: formData
+                });
+
+                var result = await response.json();
+
+                if (result.success) {
+                    document.getElementById("notifyFormWrapper").style.display = "none";
+                    successDiv.style.display = "block";
+                    setTimeout(function () {
+                        closeModal();
+                        setTimeout(function () {
+                            document.getElementById("notifyFormWrapper").style.display = "block";
+                            successDiv.style.display = "none";
+                            form.reset();
+                            submitBtn.textContent = "Submit Request";
+                            submitBtn.disabled = false;
+                        }, 500);
+                    }, 3000);
+                } else {
+                    alert("Error: " + (result.error || "Something went wrong"));
+                    submitBtn.textContent = "Submit Request";
+                    submitBtn.disabled = false;
+                }
+            } catch (err) {
+                alert("Network error: " + err.message);
+                submitBtn.textContent = "Submit Request";
+                submitBtn.disabled = false;
+            }
+        });
+    })();
+</script>
+
+{% endif %}
+
+{% schema %}
+{
+"name": "Notify Me Block",
+"target": "section",
+"settings": [
+{
+"type": "text",
+"id": "app_url",
+"label": "App URL (Cloudflare Tunnel URL)",
+"placeholder": "https://xxxx.trycloudflare.com"
+}
+]
+}
+{% endschema %}

@@ -1,0 +1,88 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:dev.sqlite"
+}
+
+model Session {
+  id                  String    @id
+  shop                String
+  state               String
+  isOnline            Boolean   @default(false)
+  scope               String?
+  expires             DateTime?
+  accessToken         String
+  userId              BigInt?
+  firstName           String?
+  lastName            String?
+  email               String?
+  accountOwner        Boolean   @default(false)
+  locale              String?
+  collaborator        Boolean?  @default(false)
+  emailVerified       Boolean?  @default(false)
+  refreshToken        String?
+  refreshTokenExpires DateTime?
+}
+
+model NotifyRequest {
+  id             String   @id @default(uuid())
+  productId      String
+  productTitle   String
+  productVariant String?
+  productImage   String?
+  email          String
+  name           String?
+  message        String?
+  createdAt      DateTime @default(now())
+}
+
+model Quiz {
+  id        String         @id @default(uuid())
+  title     String
+  status    String         @default("draft")
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+  questions QuizQuestion[]
+  products  QuizProduct[]
+}
+
+model QuizQuestion {
+  id       String @id @default(uuid())
+  quizId   String
+  question String
+  answers  String
+  position Int    @default(0)
+  quiz     Quiz   @relation(fields: [quizId], references: [id], onDelete: Cascade)
+}
+
+model QuizProduct {
+  id        String   @id @default(uuid())
+  quizId    String?
+  category  String
+  color     String
+  size      String
+  variantId String
+  imageUrl  String
+  title     String
+  handle    String
+  createdAt DateTime @default(now())
+  quiz      Quiz?    @relation(fields: [quizId], references: [id], onDelete: SetNull)
+}
+
+
+
+model RecommendedProduct {
+  id          String   @id @default(cuid())
+  productId   String
+  productTitle String
+  productHandle String
+  productImage String?
+  productPrice String?
+  isActive    Boolean  @default(true)
+  position    Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
