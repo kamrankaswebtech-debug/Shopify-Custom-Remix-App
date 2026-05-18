@@ -225,11 +225,7 @@
                 var formData = new FormData(form);
 
                 // App Proxy URL - CORS issue nahi hoga
-<<<<<<< HEAD
-                var response = await fetch("/apps/notify", {
-=======
                 var response = await fetch("https://lilly-unnative-uncontingently.ngrok-free.dev/apps/notify", {
->>>>>>> 34b6c67dfedb3fb6360572de469f9480b507938f
                     method: "POST",
                     body: formData
                 });

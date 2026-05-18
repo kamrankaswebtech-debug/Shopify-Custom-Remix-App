@@ -1,13 +1,4 @@
 import { json } from "@remix-run/node";
-<<<<<<< HEAD
-import { useLoaderData } from "@remix-run/react";
-import { authenticate } from "../shopify.server";
-import { prisma } from "../db.server";
-import {
-  Page,
-  Card,
-  DataTable,
-=======
 import { useLoaderData, useFetcher } from "@remix-run/react";
 import { authenticate } from "../shopify.server";
 import { prisma } from "../db.server";
@@ -15,7 +6,6 @@ import nodemailer from "nodemailer";
 import {
   Page,
   Card,
->>>>>>> 34b6c67dfedb3fb6360572de469f9480b507938f
   Text,
   Badge,
   EmptyState,
@@ -23,22 +13,6 @@ import {
   InlineStack,
   BlockStack,
   Thumbnail,
-<<<<<<< HEAD
-} from "@shopify/polaris";
-
-export const loader = async ({ request }) => {
-  await authenticate.admin(request);
-
-  const requests = await prisma.notifyRequest.findMany({
-    orderBy: { createdAt: "desc" },
-  });
-
-  return json({ requests });
-};
-
-export default function NotifyPage() {
-  const { requests } = useLoaderData();
-=======
   Button,
   Banner,
 } from "@shopify/polaris";
@@ -106,7 +80,7 @@ export default function NotifyPage() {
 
   const isLoading = fetcher.state !== "idle";
   const message = fetcher.data?.message;
->>>>>>> 34b6c67dfedb3fb6360572de469f9480b507938f
+
 
   if (requests.length === 0) {
     return (
@@ -116,11 +90,7 @@ export default function NotifyPage() {
             heading="No notify requests yet"
             image="https://cdn.shopify.com/s/files/1/0262/4071/2726/files/emptystate-files.png"
           >
-<<<<<<< HEAD
-            <p>Jab koi customer "Notify Me" form fill karega, yahan dikhega.</p>
-=======
             <p>When any Customer filled "Notify Me" Form Present's Here! </p>
->>>>>>> 34b6c67dfedb3fb6360572de469f9480b507938f
           </EmptyState>
         </Card>
       </Page>
@@ -129,7 +99,6 @@ export default function NotifyPage() {
 
   return (
     <Page
-<<<<<<< HEAD
       title="Notify Me Requests"
       subtitle={`Total: ${requests.length} requests`}
     >
@@ -287,7 +256,6 @@ export default function NotifyPage() {
                       🗑️ Delete
                     </Button>
                   </fetcher.Form>
->>>>>>> 34b6c67dfedb3fb6360572de469f9480b507938f
                 </BlockStack>
               </InlineStack>
             </Box>

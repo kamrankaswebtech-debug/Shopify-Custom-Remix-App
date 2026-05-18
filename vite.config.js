@@ -39,11 +39,7 @@ if (host === "localhost") {
 
 export default defineConfig({
   server: {
-<<<<<<< HEAD
     allowedHosts: [host],
-=======
-    allowedHosts: ["lilly-unnative-uncontingently.ngrok-free.dev"],
->>>>>>> 34b6c67dfedb3fb6360572de469f9480b507938f
     cors: {
       preflightContinue: true,
     },

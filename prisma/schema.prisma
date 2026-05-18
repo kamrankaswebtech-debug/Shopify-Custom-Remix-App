@@ -37,8 +37,6 @@ model NotifyRequest {
   name           String?
   message        String?
   createdAt      DateTime @default(now())
-<<<<<<< HEAD
-=======
 }
 
 model Quiz {
@@ -87,5 +85,4 @@ model RecommendedProduct {
   position    Int      @default(0)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
->>>>>>> 34b6c67dfedb3fb6360572de469f9480b507938f
 }
