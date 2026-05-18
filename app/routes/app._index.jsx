@@ -249,7 +249,11 @@ export const action = async ({ request }) => {
     const productId = form.get("productId");
     const imageUrl = form.get("imageUrl");
 
+<<<<<<< HEAD
     // Pehle purani image delete karo, phir nayi add karo
+=======
+    // delete old product and add new 
+>>>>>>> 34b6c67dfedb3fb6360572de469f9480b507938f
     const addRes = await admin.graphql(
       `mutation productCreateMedia($productId: ID!, $media: [CreateMediaInput!]!) {
         productCreateMedia(productId: $productId, media: $media) {
@@ -369,12 +373,20 @@ function ImageUploadCell({ productId, currentUrl, onUploadDone }) {
     if (!file) return;
     setUploading(true);
 
+<<<<<<< HEAD
     // FileReader se base64 banao preview ke liye
+=======
+    // FileReader create base64 for preview 
+>>>>>>> 34b6c67dfedb3fb6360572de469f9480b507938f
     const reader = new FileReader();
     reader.onload = (ev) => setPreview(ev.target.result);
     reader.readAsDataURL(file);
 
+<<<<<<< HEAD
     // Shopify staged upload karo
+=======
+    // Shopify staged upload 
+>>>>>>> 34b6c67dfedb3fb6360572de469f9480b507938f
     try {
       const formData = new FormData();
       formData.append("type", "image-upload-staged");
@@ -390,7 +402,11 @@ function ImageUploadCell({ productId, currentUrl, onUploadDone }) {
       const stageData = await stageRes.json();
 
       if (stageData.target) {
+<<<<<<< HEAD
         // File upload karo staged URL pe
+=======
+        // File upload staged URL 
+>>>>>>> 34b6c67dfedb3fb6360572de469f9480b507938f
         const uploadForm = new FormData();
         stageData.parameters.forEach(({ name, value }) => {
           uploadForm.append(name, value);
@@ -399,7 +415,11 @@ function ImageUploadCell({ productId, currentUrl, onUploadDone }) {
 
         await fetch(stageData.target, { method: "POST", body: uploadForm });
 
+<<<<<<< HEAD
         // Ab resourceUrl se product image update karo
+=======
+        // resourceUrl  product image update 
+>>>>>>> 34b6c67dfedb3fb6360572de469f9480b507938f
         const updateForm = new FormData();
         updateForm.append("type", "image-update");
         updateForm.append("productId", productId);
@@ -501,7 +521,11 @@ export default function Index() {
     submit({ type: "variant-inventory", inventoryItemId, quantity }, { method: "post" });
   };
 
+<<<<<<< HEAD
   /* Variant save — EK hi submit, combo action */
+=======
+  /* Variant save — onece submit, combo action */
+>>>>>>> 34b6c67dfedb3fb6360572de469f9480b507938f
   const saveVariant = (productId, vr) => {
     const price = editingVariant.price.replace("₹", "").trim();
     const quantity = editingVariant.inventory;

@@ -1,0 +1,15 @@
+api_version = "2026-01"
+
+[[extensions]]
+name = "checkout-recommendations"
+handle = "checkout-recommendations"
+type = "ui_extension"
+uid = "d296a286-e696-6ece-36cc-64f3fd7b258c5b2b48b8"
+
+[[extensions.targeting]]
+module = "./src/Checkout.jsx"
+target = "purchase.checkout.block.render"
+
+[extensions.capabilities]
+api_access = true
+network_access = true

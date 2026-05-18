@@ -15,8 +15,19 @@ const shopify = shopifyApp({
   appUrl: process.env.SHOPIFY_APP_URL || "",
   authPathPrefix: "/auth",
   sessionStorage: new PrismaSessionStorage(prisma),
+<<<<<<< HEAD
   distribution: AppDistribution.SingleMerchant,
   
+=======
+  distribution: AppDistribution.AppStore,
+  // ---- YAHA ADD KARO ----
+  publicApiPrefix: "/api",
+  // -----------------------
+  future: {
+    unstable_newEmbeddedAuthStrategy: true,
+    expiringOfflineAccessTokens: true,
+  },
+>>>>>>> 34b6c67dfedb3fb6360572de469f9480b507938f
   ...(process.env.SHOP_CUSTOM_DOMAIN
     ? { customShopDomains: [process.env.SHOP_CUSTOM_DOMAIN] }
     : {}),

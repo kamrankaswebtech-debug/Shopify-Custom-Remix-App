@@ -22,7 +22,15 @@ export default function App() {
         <Link to="/app" rel="home">
           Home
         </Link>
+<<<<<<< HEAD
         <Link to="/app/additional">Additional page</Link>
+=======
+        <Link to="/app/additional">Manage Quiz with Pruducts</Link>
+        <Link to="/app/notify">Notify Requests</Link>
+        <Link to="/app/recommendations">Checkout Recommendations</Link>
+
+
+>>>>>>> 34b6c67dfedb3fb6360572de469f9480b507938f
       </NavMenu>
       <Outlet />
     </AppProvider>

@@ -37,4 +37,55 @@ model NotifyRequest {
   name           String?
   message        String?
   createdAt      DateTime @default(now())
+<<<<<<< HEAD
+=======
+}
+
+model Quiz {
+  id        String         @id @default(uuid())
+  title     String
+  status    String         @default("draft")
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+  questions QuizQuestion[]
+  products  QuizProduct[]
+}
+
+model QuizQuestion {
+  id       String @id @default(uuid())
+  quizId   String
+  question String
+  answers  String
+  position Int    @default(0)
+  quiz     Quiz   @relation(fields: [quizId], references: [id], onDelete: Cascade)
+}
+
+model QuizProduct {
+  id        String   @id @default(uuid())
+  quizId    String?
+  category  String
+  color     String
+  size      String
+  variantId String
+  imageUrl  String
+  title     String
+  handle    String
+  createdAt DateTime @default(now())
+  quiz      Quiz?    @relation(fields: [quizId], references: [id], onDelete: SetNull)
+}
+
+
+
+model RecommendedProduct {
+  id          String   @id @default(cuid())
+  productId   String
+  productTitle String
+  productHandle String
+  productImage String?
+  productPrice String?
+  isActive    Boolean  @default(true)
+  position    Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+>>>>>>> 34b6c67dfedb3fb6360572de469f9480b507938f
 }
